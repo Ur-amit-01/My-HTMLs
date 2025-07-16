@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Impulse Power Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      max-width: 500px;
+      margin: auto;
+      background: #f9f9f9;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      font-size: 16px;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .result {
+      background: #fff;
+      padding: 10px;
+      border: 1px solid #ddd;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h2>⚡ Impulse Power Calculator</h2>
+  <label>Impulse Rate (Imp/kWh):</label>
+  <input type="number" id="impRate" value="3200">
+
+  <label>Time per Impulse (in seconds):</label>
+  <input type="number" id="timePerImpulse" step="0.1">
+
+  <label>Known Load (Watts) — optional (e.g., bulb):</label>
+  <input type="number" id="knownLoad" value="0">
+
+  <button onclick="calculate()">Calculate Power</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    function calculate() {
+      const impRate = parseFloat(document.getElementById('impRate').value);
+      const time = parseFloat(document.getElementById('timePerImpulse').value);
+      const knownLoad = parseFloat(document.getElementById('knownLoad').value);
+
+      if (isNaN(time) || time <= 0 || isNaN(impRate) || impRate <= 0) {
+        document.getElementById('result').innerHTML = "Please enter valid values.";
+        return;
+      }
+
+      const totalPower = (3600 / (impRate * time)) * 1000; // in Watts
+      const devicePower = totalPower - knownLoad;
+
+      document.getElementById('result').innerHTML = `
+        <strong>Total Power:</strong> ${totalPower.toFixed(2)} W<br>
+        <strong>Unknown Device Power:</strong> ${devicePower.toFixed(2)} W
+      `;
+    }
+  </script>
+</body>
+</html>
