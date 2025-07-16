@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Power Meter Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #f5f7fa, #e4e8f0);
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #2c3e50;
+    }
+    .calculator {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      padding: 30px;
+      width: 100%;
+      max-width: 400px;
+    }
+    h1 {
+      color: #4361ee;
+      text-align: center;
+      margin-top: 0;
+      font-size: 24px;
+    }
+    .input-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #4a5568;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border 0.2s;
+    }
+    input:focus {
+      outline: none;
+      border-color: #4361ee;
+      box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(to right, #4361ee, #3a0ca3);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 10px;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+    }
+    .result {
+      margin-top: 25px;
+      padding: 20px;
+      background: #f0f4ff;
+      border-radius: 8px;
+      display: none;
+    }
+    .result-value {
+      font-size: 18px;
+      font-weight: 600;
+      color: #3a0ca3;
+    }
+    .instructions {
+      background: #f8fafc;
+      border-left: 4px solid #4361ee;
+      padding: 15px;
+      border-radius: 0 8px 8px 0;
+      margin-top: 25px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <h1>🔌 Power Calculator ~ Amit ✨</h1>
+    
+    <div class="input-group">
+      <label for="impRate">Meter Constant (imp/kWh)</label>
+      <input type="number" id="impRate" value="3200" min="1" placeholder="e.g., 3200">
+    </div>
+    
+    <div class="input-group">
+      <label for="timePerImpulse">Time Between Blinks (seconds)</label>
+      <input type="number" id="timePerImpulse" step="0.1" min="0.1" placeholder="e.g., 10">
+    </div>
+    
+    <div class="input-group">
+      <label for="knownLoad">Known Load (Watts) - Optional</label>
+      <input type="number" id="knownLoad" value="0" min="0" placeholder="e.g., 9 for a bulb">
+    </div>
+    
+    <button onclick="calculate()">Calculate Power 🔌</button>
+    
+    <div class="result" id="result">
+      <p>Total Power: <span class="result-value" id="totalPower"></span></p>
+      <p>Unknown Device: <span class="result-value" id="devicePower"></span></p>
+    </div>
+    
+    <div class="instructions">
+      <p><strong>How to use:</strong></p>
+      <ul>
+        <li>Enter your electric meter's constant (imp/kWh)</li>
+        <li>Measure time between blinks with a stopwatch</li>
+        <li>Add any known loads (Watts)</li>
+        <li>Get your device's power consumption :)</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function calculate() {
+      const impRate = parseFloat(document.getElementById('impRate').value);
+      const time = parseFloat(document.getElementById('timePerImpulse').value);
+      const knownLoad = parseFloat(document.getElementById('knownLoad').value) || 0;
+
+      if (isNaN(time) || time <= 0 || isNaN(impRate) || impRate <= 0) {
+        alert("Please enter valid values for both meter constant and blink interval");
+        return;
+      }
+
+      const totalPower = (3600 / (impRate * time)) * 1000;
+      const devicePower = totalPower - knownLoad;
+
+      document.getElementById('totalPower').textContent = `${totalPower.toFixed(2)} Watts`;
+      document.getElementById('devicePower').textContent = `${devicePower.toFixed(2)} Watts`;
+      document.getElementById('result').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
