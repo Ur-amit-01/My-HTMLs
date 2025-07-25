@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Space Clock 2.0</title>
+    <title>Neon Space Clock</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
         
@@ -12,9 +12,6 @@
             --secondary-color: #ff00f2;
             --bg-color: #0a0a1a;
             --clock-face: rgba(20, 20, 40, 0.8);
-            --glow-intensity: 0.5;
-            --clock-size: 320px;
-            --float-speed: 8s;
         }
         
         body {
@@ -55,11 +52,10 @@
         
         .clock-container {
             position: relative;
-            width: var(--clock-size);
-            height: var(--clock-size);
+            width: 300px;
+            height: 300px;
             transform-style: preserve-3d;
-            animation: floatClock var(--float-speed) ease-in-out infinite;
-            transition: all 0.5s ease;
+            animation: floatClock 8s ease-in-out infinite;
         }
         
         @keyframes floatClock {
@@ -74,11 +70,11 @@
             background: var(--clock-face);
             position: relative;
             box-shadow: 
-                0 0 calc(30px * var(--glow-intensity)) rgba(0, 242, 255, var(--glow-intensity)),
-                0 0 80px rgba(0, 0, 0, 0.7),
-                inset 0 0 30px rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            border: 2px solid rgba(255, 255, 255, 0.15);
+                0 0 30px rgba(0, 242, 255, 0.3),
+                0 0 60px rgba(0, 0, 0, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             transition: all 0.5s ease;
         }
         
@@ -90,15 +86,15 @@
             right: 5%;
             bottom: 5%;
             border-radius: 50%;
-            border: 2px solid rgba(0, 242, 255, 0.3);
-            box-shadow: inset 0 0 30px rgba(0, 242, 255, 0.15);
+            border: 2px solid rgba(0, 242, 255, 0.2);
+            box-shadow: inset 0 0 20px rgba(0, 242, 255, 0.1);
             pointer-events: none;
         }
         
         .center-dot {
             position: absolute;
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             background: white;
             border-radius: 50%;
             top: 50%;
@@ -106,8 +102,8 @@
             transform: translate(-50%, -50%);
             z-index: 10;
             box-shadow: 
-                0 0 15px var(--primary-color),
-                0 0 30px var(--primary-color);
+                0 0 10px var(--primary-color),
+                0 0 20px var(--primary-color);
         }
         
         .hand {
@@ -116,46 +112,45 @@
             bottom: 50%;
             left: 50%;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.8);
-            transition: transform 0.05s cubic-bezier(0.4, 2.3, 0.3, 1);
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.7);
         }
         
         .hour-hand {
-            width: 8px;
-            height: 80px;
+            width: 6px;
+            height: 70px;
             background: linear-gradient(to top, var(--primary-color), white);
             transform: translateX(-50%) rotate(0deg);
             z-index: 3;
         }
         
         .minute-hand {
-            width: 5px;
-            height: 110px;
+            width: 4px;
+            height: 100px;
             background: linear-gradient(to top, white, var(--secondary-color));
             transform: translateX(-50%) rotate(0deg);
             z-index: 4;
         }
         
         .second-hand {
-            width: 3px;
-            height: 130px;
+            width: 2px;
+            height: 120px;
             background: white;
             transform: translateX(-50%) rotate(0deg);
             z-index: 5;
-            box-shadow: 0 0 10px white;
+            box-shadow: 0 0 5px white;
         }
         
         .second-hand::before {
             content: '';
             position: absolute;
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             background: white;
             border-radius: 50%;
-            bottom: -6px;
+            bottom: -5px;
             left: 50%;
             transform: translateX(-50%);
-            box-shadow: 0 0 15px white;
+            box-shadow: 0 0 10px white;
         }
         
         .markers {
@@ -168,18 +163,18 @@
         
         .marker {
             position: absolute;
-            width: 3px;
-            height: 12px;
-            background: rgba(255, 255, 255, 0.8);
+            width: 2px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.7);
             left: 50%;
             transform-origin: bottom center;
             transform: translateX(-50%);
         }
         
         .marker.major {
-            height: 18px;
+            height: 15px;
             background: var(--primary-color);
-            width: 4px;
+            width: 3px;
         }
         
         .numbers {
@@ -193,243 +188,75 @@
         .number {
             position: absolute;
             color: white;
-            font-size: 22px;
+            font-size: 18px;
             font-weight: bold;
-            text-shadow: 
-                0 0 15px var(--primary-color),
-                0 0 30px var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color);
             transform: translate(-50%, -50%);
         }
         
         .digital-display {
             position: absolute;
-            bottom: -70px;
+            bottom: -60px;
             left: 50%;
             transform: translateX(-50%);
             color: white;
-            font-size: 22px;
-            letter-spacing: 3px;
-            text-shadow: 0 0 15px var(--primary-color);
-            background: rgba(0, 0, 0, 0.4);
-            padding: 12px 25px;
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--primary-color);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
         }
         
-        .control-panel {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(10, 10, 30, 0.7);
-            border: 1px solid rgba(0, 242, 255, 0.3);
-            border-radius: 25px;
-            padding: 15px 25px;
-            display: flex;
-            gap: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-            z-index: 100;
-        }
-        
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 0 15px;
-            border-right: 1px solid rgba(0, 242, 255, 0.2);
-        }
-        
-        .control-group:last-child {
-            border-right: none;
-        }
-        
-        .control-label {
-            color: var(--primary-color);
-            font-size: 14px;
-            text-align: center;
-            letter-spacing: 1px;
-            text-shadow: 0 0 5px var(--primary-color);
-        }
-        
-        .theme-btn {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .theme-btn::after {
-            content: '';
+        .theme-toggle {
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, white 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .theme-btn:hover::after {
-            opacity: 0.4;
-        }
-        
-        .theme-btn.active {
-            transform: scale(1.15);
-            box-shadow: 0 0 20px currentColor;
-        }
-        
-        .slider-container {
-            width: 120px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .slider {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 5px;
-            background: rgba(0, 242, 255, 0.2);
-            border-radius: 3px;
-            outline: none;
-        }
-        
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--primary-color);
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 0 10px var(--primary-color);
-        }
-        
-        .slider::-webkit-slider-thumb:hover {
-            transform: scale(1.3);
-            box-shadow: 0 0 15px var(--primary-color);
-        }
-        
-        .toggle-btn {
-            position: relative;
-            width: 60px;
-            height: 30px;
-            background: rgba(0, 242, 255, 0.2);
-            border-radius: 30px;
-            border: none;
-            cursor: pointer;
+            backdrop-filter: blur(5px);
             transition: all 0.3s ease;
         }
         
-        .toggle-btn::before {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 24px;
-            height: 24px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px var(--primary-color);
-        }
-        
-        .toggle-btn.active {
-            background: rgba(0, 242, 255, 0.4);
-        }
-        
-        .toggle-btn.active::before {
-            left: calc(100% - 27px);
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
         
         .moon {
             position: absolute;
-            top: 30px;
-            left: 30px;
-            width: 50px;
-            height: 50px;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: radial-gradient(circle at 35px 15px, #f5f7a0, transparent 60%);
-            box-shadow: 0 0 40px #f5f7a0;
+            background: radial-gradient(circle at 30px 10px, #f5f7a0, transparent 60%);
+            box-shadow: 0 0 30px #f5f7a0;
             opacity: 0;
             transition: opacity 0.5s ease;
-            z-index: -1;
-        }
-        
-        .satellite {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 0 15px white;
-            animation: satellite-orbit 20s linear infinite;
-            opacity: 0.8;
-        }
-        
-        @keyframes satellite-orbit {
-            0% {
-                transform: rotate(0deg) translateX(250px) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: rotate(360deg) translateX(250px) rotate(-360deg);
-                opacity: 0;
-            }
-        }
-        
-        .pulse-effect {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 2px solid var(--primary-color);
-            animation: pulse 4s infinite ease-out;
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                opacity: 0.7;
-            }
-            100% {
-                transform: scale(1.3);
-                opacity: 0;
-            }
         }
     </style>
 </head>
 <body>
     <div class="particles" id="particles"></div>
     <div class="moon" id="moon"></div>
-    <div class="satellite" id="satellite"></div>
+    
+    <button class="theme-toggle" id="themeToggle">Change Theme</button>
     
     <div class="clock-container">
         <div class="clock" id="clock">
-            <div class="pulse-effect"></div>
             <div class="center-dot"></div>
             <div class="hand hour-hand" id="hourHand"></div>
             <div class="hand minute-hand" id="minuteHand"></div>
             <div class="hand second-hand" id="secondHand"></div>
             
             <div class="markers">
+                <!-- Hour markers -->
                 <div class="marker major" style="transform: translateX(-50%) rotate(0deg)"></div>
                 <div class="marker" style="transform: translateX(-50%) rotate(30deg)"></div>
                 <div class="marker" style="transform: translateX(-50%) rotate(60deg)"></div>
@@ -455,72 +282,34 @@
         <div class="digital-display" id="digitalDisplay"></div>
     </div>
 
-    <div class="control-panel">
-        <div class="control-group">
-            <div class="control-label">THEME</div>
-            <div style="display: flex; gap: 10px;">
-                <button class="theme-btn active" style="background: #00f2ff;" data-theme="0"></button>
-                <button class="theme-btn" style="background: #ff9a00;" data-theme="1"></button>
-                <button class="theme-btn" style="background: #00ff88;" data-theme="2"></button>
-                <button class="theme-btn" style="background: #f0f;" data-theme="3"></button>
-            </div>
-        </div>
-        
-        <div class="control-group">
-            <div class="control-label">SIZE</div>
-            <div class="slider-container">
-                <input type="range" min="200" max="400" value="320" class="slider" id="sizeSlider">
-            </div>
-        </div>
-        
-        <div class="control-group">
-            <div class="control-label">GLOW</div>
-            <div class="slider-container">
-                <input type="range" min="0" max="1" step="0.1" value="0.5" class="slider" id="glowSlider">
-            </div>
-        </div>
-        
-        <div class="control-group">
-            <div class="control-label">ANIMATE</div>
-            <button class="toggle-btn active" id="animationToggle"></button>
-        </div>
-    </div>
-
     <script>
         // Create particles
         const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 150; i++) {
+        for (let i = 0; i < 100; i++) {
             const particle = document.createElement('div');
             particle.classList.add('particle');
             particle.style.left = `${Math.random() * 100}%`;
             particle.style.top = `${Math.random() * 100}%`;
-            particle.style.width = `${Math.random() * 4 + 1}px`;
+            particle.style.width = `${Math.random() * 3 + 1}px`;
             particle.style.height = particle.style.width;
-            particle.style.animationDuration = `${Math.random() * 25 + 10}s`;
-            particle.style.animationDelay = `${Math.random() * 15}s`;
-            particle.style.opacity = Math.random() * 0.7 + 0.1;
+            particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+            particle.style.animationDelay = `${Math.random() * 10}s`;
             particlesContainer.appendChild(particle);
         }
-        
-        // Create satellite
-        const satellite = document.getElementById('satellite');
-        satellite.style.animationDelay = `${Math.random() * 5}s`;
         
         // Themes
         const themes = [
             { primary: '#00f2ff', secondary: '#ff00f2', bg: '#0a0a1a', face: 'rgba(20, 20, 40, 0.8)' }, // Default
             { primary: '#ff9a00', secondary: '#ff0058', bg: '#1a0a0a', face: 'rgba(40, 20, 20, 0.8)' }, // Sunset
             { primary: '#00ff88', secondary: '#0088ff', bg: '#0a1a0a', face: 'rgba(20, 40, 20, 0.8)' }, // Cyber
-            { primary: '#f0f', secondary: '#0ff', bg: '#1a0a1a', face: 'rgba(40, 20, 40, 0.8)' } // Neon
+            { primary: '#f0f', secondary: '#0ff', bg: '#1a0a1a', face: 'rgba(40, 20, 40, 0.8)' }, // Neon
+            { primary: '#fff', secondary: '#aaa', bg: '#000', face: 'rgba(30, 30, 30, 0.9)' } // Monochrome
         ];
         
-        // Theme buttons
-        document.querySelectorAll('.theme-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelector('.theme-btn.active').classList.remove('active');
-                this.classList.add('active');
-                applyTheme(themes[this.dataset.theme]);
-            });
+        let currentTheme = 0;
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            currentTheme = (currentTheme + 1) % themes.length;
+            applyTheme(themes[currentTheme]);
         });
         
         function applyTheme(theme) {
@@ -529,27 +318,6 @@
             document.documentElement.style.setProperty('--bg-color', theme.bg);
             document.documentElement.style.setProperty('--clock-face', theme.face);
         }
-        
-        // Size slider
-        document.getElementById('sizeSlider').addEventListener('input', function() {
-            document.documentElement.style.setProperty('--clock-size', `${this.value}px`);
-        });
-        
-        // Glow slider
-        document.getElementById('glowSlider').addEventListener('input', function() {
-            document.documentElement.style.setProperty('--glow-intensity', this.value);
-        });
-        
-        // Animation toggle
-        document.getElementById('animationToggle').addEventListener('click', function() {
-            this.classList.toggle('active');
-            const clock = document.querySelector('.clock-container');
-            if (this.classList.contains('active')) {
-                clock.style.animationPlayState = 'running';
-            } else {
-                clock.style.animationPlayState = 'paused';
-            }
-        });
         
         // Clock functionality
         function updateClock() {
@@ -582,6 +350,9 @@
             requestAnimationFrame(updateClock);
         }
         
+        // Initialize
+        updateClock();
+        
         // Interactive glow effect
         const clock = document.getElementById('clock');
         document.addEventListener('mousemove', (e) => {
@@ -589,21 +360,12 @@
             const y = e.clientY / window.innerHeight;
             
             clock.style.boxShadow = `
-                ${(x - 0.5) * 40}px ${(y - 0.5) * 40}px 80px rgba(0, 242, 255, calc(0.3 * var(--glow-intensity))),
-                0 0 80px rgba(0, 0, 0, 0.7),
-                inset 0 0 30px rgba(255, 255, 255, 0.15)
+                ${(x - 0.5) * 30}px ${(y - 0.5) * 30}px 60px rgba(0, 242, 255, 0.3),
+                0 0 60px rgba(0, 0, 0, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.1)
             `;
-            
-            // Update satellite position relative to cursor
-            const satellite = document.getElementById('satellite');
-            const angle = Math.atan2(e.clientY - window.innerHeight/2, e.clientX - window.innerWidth/2);
-            satellite.style.left = `${window.innerWidth/2 + Math.cos(angle) * 250}px`;
-            satellite.style.top = `${window.innerHeight/2 + Math.sin(angle) * 250}px`;
         });
-        
-        // Initialize
-        updateClock();
     </script>
 </body>
 </html>
-           
+
