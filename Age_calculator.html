@@ -1,150 +1,573 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Power Meter Calculator</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #ffcfcf;
-background: linear-gradient(90deg, rgba(255, 207, 207, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%);
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #2c3e50;
-    }
-    .calculator {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      padding: 30px;
-      width: 100%;
-      max-width: 400px;
-    }
-    h1 {
-      color: #4361ee;
-      text-align: center;
-      margin-top: 0;
-      font-size: 24px;
-    }
-    .input-group {
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 500;
-      color: #4a5568;
-    }
-    input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      font-size: 16px;
-      transition: border 0.2s;
-    }
-    input:focus {
-      outline: none;
-      border-color: #4361ee;
-      box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
-    }
-    button {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(to right, #4361ee, #3a0ca3);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      margin-top: 10px;
-    }
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
-    }
-    .result {
-      margin-top: 25px;
-      padding: 20px;
-      background: #f0f4ff;
-      border-radius: 8px;
-      display: none;
-    }
-    .result-value {
-      font-size: 18px;
-      font-weight: 600;
-      color: #3a0ca3;
-    }
-    .instructions {
-      background: #f8fafc;
-      border-left: 4px solid #4361ee;
-      padding: 15px;
-      border-radius: 0 8px 8px 0;
-      margin-top: 25px;
-      font-size: 14px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⏳ Flow Focus</title>
+    <style>
+        /* Cosmic Color Variables */
+        :root {
+            --bg-dark: #0f0f1a;
+            --card-dark: #1a1a2e;
+            --text-dark: #e0e0ff;
+            --primary-dark: #6e48aa;
+            --accent-dark: #4776e6;
+            --progress-bg-dark: #2d2d2d;
+            --glow-dark: rgba(71, 118, 230, 0.3);
+            
+            --bg-light: #f5f7ff;
+            --card-light: #ffffff;
+            --text-light: #333366;
+            --primary-light: #6e48aa;
+            --accent-light: #3366ff;
+            --progress-bg-light: #e0e0e0;
+            --glow-light: rgba(110, 72, 170, 0.2);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        
+        /* Floating Particles Animation */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(110, 72, 170, 0.15);
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
+        }
+        
+        /* Main Container */
+        .container {
+            background: var(--card-dark);
+            border-radius: 24px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px var(--glow-dark);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(110, 72, 170, 0.2);
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(110,72,170,0.1) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Sliding Day/Night Toggle */
+        .toggle-container {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 70px;
+            height: 34px;
+            background: rgba(110, 72, 170, 0.3);
+            border-radius: 34px;
+            cursor: pointer;
+            transition: all 0.4s;
+            border: 1px solid rgba(110, 72, 170, 0.5);
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
+            top: 2px;
+            left: 2px;
+            transition: all 0.4s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        /* Circular Progress */
+        .progress-ring {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 0 auto;
+        }
+        
+        .progress-circle {
+            fill: none;
+            stroke: var(--progress-bg-dark);
+            stroke-width: 10;
+        }
+        
+        .progress-fill {
+            fill: none;
+            stroke: var(--primary-dark);
+            stroke-width: 10;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 0.5s ease-out;
+        }
+        
+        .timer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3.5rem;
+            font-weight: 300;
+            letter-spacing: -2px;
+            text-align: center;
+        }
+        
+        .timer-label {
+            position: absolute;
+            top: 65%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Preset Buttons */
+        .presets {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin: 2rem 0;
+        }
+        
+        .preset-btn {
+            padding: 0.6rem 1.2rem;
+            background: rgba(110, 72, 170, 0.2);
+            border: 1px solid var(--primary-dark);
+            color: var(--text-dark);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            opacity: 0.7;
+        }
+        
+        .preset-btn.active {
+            background: var(--primary-dark);
+            color: white;
+            opacity: 1;
+            box-shadow: 0 0 15px var(--glow-dark);
+            transform: translateY(-3px);
+        }
+        
+        /* Control Buttons */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        button {
+            background: var(--accent-dark);
+            color: white;
+            border: none;
+            padding: 0.9rem 1.8rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            min-width: 100px;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%);
+            transition: all 0.4s;
+            z-index: -1;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        button:hover::before {
+            transform: translateX(100%);
+        }
+        
+        #startBtn {
+            background: var(--primary-dark);
+        }
+        
+        /* Stats Display */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .stat {
+            padding: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Light Mode Styles */
+        body.light-mode {
+            background: var(--bg-light);
+            color: var(--text-light);
+        }
+        
+        body.light-mode .container {
+            background: var(--card-light);
+            box-shadow: 0 20px 50px var(--glow-light);
+            border: 1px solid rgba(110, 72, 170, 0.1);
+        }
+        
+        body.light-mode .progress-circle {
+            stroke: var(--progress-bg-light);
+        }
+        
+        body.light-mode .progress-fill {
+            stroke: var(--primary-light);
+        }
+        
+        body.light-mode .preset-btn {
+            background: rgba(110, 72, 170, 0.1);
+            border: 1px solid var(--primary-light);
+            color: var(--text-light);
+        }
+        
+        body.light-mode .preset-btn.active {
+            background: var(--primary-light);
+            box-shadow: 0 0 15px var(--glow-light);
+        }
+        
+        body.light-mode button {
+            background: var(--accent-light);
+        }
+        
+        body.light-mode #startBtn {
+            background: var(--primary-light);
+        }
+        
+        body.light-mode .stat-value {
+            color: var(--primary-light);
+        }
+        
+        body.light-mode .toggle-switch {
+            background: rgba(110, 72, 170, 0.2);
+        }
+    </style>
 </head>
 <body>
-  <div class="calculator">
-    <h1>🔌 Power Calculator ~ Amit ✨</h1>
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
     
-    <div class="input-group">
-      <label for="impRate">Meter Constant (imp/kWh)</label>
-      <input type="number" id="impRate" value="3200" min="1" placeholder="e.g., 3200">
+    <div class="container">
+        <!-- Day/Night Toggle -->
+        <div class="toggle-container">
+            <div class="toggle-switch" id="modeToggle">
+                <div class="toggle-slider">🌙</div>
+            </div>
+        </div>
+        
+        <!-- Circular Timer -->
+        <div class="progress-ring">
+            <svg viewBox="0 0 100 100">
+                <circle class="progress-circle" cx="50" cy="50" r="45"></circle>
+                <circle class="progress-fill" cx="50" cy="50" r="45" stroke-dasharray="283" stroke-dashoffset="0"></circle>
+            </svg>
+            <div class="timer" id="timer">25:00</div>
+            <div class="timer-label" id="timerLabel">Focus</div>
+        </div>
+        
+        <!-- Presets -->
+        <div class="presets">
+            <button class="preset-btn active" data-work="25" data-break="5">25/5</button>
+            <button class="preset-btn" data-work="50" data-break="10">50/10</button>
+            <button class="preset-btn" data-work="90" data-break="15">90/15</button>
+        </div>
+        
+        <!-- Controls -->
+        <div class="controls">
+            <button id="startBtn">Start</button>
+            <button id="pauseBtn">Pause</button>
+            <button id="resetBtn">Reset</button>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value" id="todayTime">0h 0m</div>
+                <div class="stat-label">Today</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="sessionsCompleted">0</div>
+                <div class="stat-label">Sessions</div>
+            </div>
+        </div>
     </div>
-    
-    <div class="input-group">
-      <label for="timePerImpulse">Time Between Blinks (seconds)</label>
-      <input type="number" id="timePerImpulse" step="0.1" min="0.1" placeholder="e.g., 10">
-    </div>
-    
-    <div class="input-group">
-      <label for="knownLoad">Known Load (Watts) - Optional</label>
-      <input type="number" id="knownLoad" value="0" min="0" placeholder="e.g., 9 for a bulb">
-    </div>
-    
-    <button onclick="calculate()">Calculate Power 🔌</button>
-    
-    <div class="result" id="result">
-      <p>Total Power: <span class="result-value" id="totalPower"></span></p>
-      <p>Unknown Device: <span class="result-value" id="devicePower"></span></p>
-    </div>
-    
-    <div class="instructions">
-      <p><strong>How to use:</strong></p>
-      <ul>
-        <li>Enter your electric meter's constant (imp/kWh)</li>
-        <li>Measure time between blinks with a stopwatch</li>
-        <li>Add any known loads (Watts)</li>
-        <li>Get your device's power consumption :)</li>
-      </ul>
-    </div>
-  </div>
 
-  <script>
-    function calculate() {
-      const impRate = parseFloat(document.getElementById('impRate').value);
-      const time = parseFloat(document.getElementById('timePerImpulse').value);
-      const knownLoad = parseFloat(document.getElementById('knownLoad').value) || 0;
+    <audio id="endSound" src="https://assets.mixkit.co/sfx/preview/mixkit-positive-interface-beep-221.mp3"></audio>
 
-      if (isNaN(time) || time <= 0 || isNaN(impRate) || impRate <= 0) {
-        alert("Please enter valid values for both meter constant and blink interval");
-        return;
-      }
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size
+                const size = Math.random() * 8 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                
+                // Random animation
+                particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
 
-      const totalPower = (3600 / (impRate * time)) * 1000;
-      const devicePower = totalPower - knownLoad;
+        // Initialize particles
+        createParticles();
 
-      document.getElementById('totalPower').textContent = `${totalPower.toFixed(2)} Watts`;
-      document.getElementById('devicePower').textContent = `${devicePower.toFixed(2)} Watts`;
-      document.getElementById('result').style.display = 'block';
-    }
-  </script>
+        // DOM Elements
+        const timerDisplay = document.getElementById('timer');
+        const timerLabel = document.getElementById('timerLabel');
+        const progressFill = document.querySelector('.progress-fill');
+        const startBtn = document.getElementById('startBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const presetButtons = document.querySelectorAll('.preset-btn');
+        const modeToggle = document.getElementById('modeToggle');
+        const toggleSlider = document.querySelector('.toggle-slider');
+        const body = document.body;
+        const todayTimeDisplay = document.getElementById('todayTime');
+        const sessionsCompletedDisplay = document.getElementById('sessionsCompleted');
+        const endSound = document.getElementById('endSound');
+
+        // Timer Variables
+        let workDuration = 25 * 60;
+        let breakDuration = 5 * 60;
+        let timeLeft = workDuration;
+        let timerInterval;
+        let isWorking = true;
+        let isRunning = false;
+        const circumference = 283; // 2πr (r=45)
+
+        // Stats Variables
+        let stats = {
+            todaySeconds: 0,
+            sessionsCompleted: 0
+        };
+
+        // Load saved data
+        function loadStats() {
+            const savedStats = localStorage.getItem('focusTimerStats');
+            if (savedStats) {
+                stats = JSON.parse(savedStats);
+                updateStatsDisplay();
+            }
+        }
+
+        // Save data
+        function saveStats() {
+            localStorage.setItem('focusTimerStats', JSON.stringify(stats));
+        }
+
+        // Format time
+        function formatTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            return `${hours}h ${minutes}m`;
+        }
+
+        // Update stats display
+        function updateStatsDisplay() {
+            todayTimeDisplay.textContent = formatTime(stats.todaySeconds);
+            sessionsCompletedDisplay.textContent = stats.sessionsCompleted;
+        }
+
+        // Add completed session
+        function addCompletedSession(minutes) {
+            stats.todaySeconds += minutes * 60;
+            stats.sessionsCompleted++;
+            saveStats();
+            updateStatsDisplay();
+        }
+
+        // Check system preference for dark mode
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (!prefersDark) {
+            body.classList.add('light-mode');
+            toggleSlider.textContent = '☀️';
+            toggleSlider.style.transform = 'translateX(36px)';
+        }
+
+        // Update Display
+        function updateDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Update progress circle
+            const totalTime = isWorking ? workDuration : breakDuration;
+            const progress = ((totalTime - timeLeft) / totalTime) * circumference;
+            progressFill.style.strokeDashoffset = circumference - progress;
+            
+            // Update label
+            timerLabel.textContent = isWorking ? "Focus" : "Break";
+        }
+
+        // Timer Functions
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateDisplay();
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        endSound.play();
+                        
+                        if (isWorking) {
+                            // Work session completed
+                            const minutes = workDuration / 60;
+                            addCompletedSession(minutes);
+                            
+                            timeLeft = breakDuration;
+                            isWorking = false;
+                        } else {
+                            // Break completed
+                            timeLeft = workDuration;
+                            isWorking = true;
+                        }
+                        startTimer();
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timeLeft = isWorking ? workDuration : breakDuration;
+            updateDisplay();
+        }
+
+        // Preset Selection
+        presetButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                presetButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                workDuration = parseInt(btn.dataset.work) * 60;
+                breakDuration = parseInt(btn.dataset.break) * 60;
+                
+                resetTimer();
+            });
+        });
+
+        // Mode Toggle
+        modeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                toggleSlider.textContent = '☀️';
+                toggleSlider.style.transform = 'translateX(36px)';
+            } else {
+                toggleSlider.textContent = '🌙';
+                toggleSlider.style.transform = 'translateX(2px)';
+            }
+        });
+
+        // Event Listeners
+        startBtn.addEventListener('click', startTimer);
+        pauseBtn.addEventListener('click', pauseTimer);
+        resetBtn.addEventListener('click', resetTimer);
+
+        // Initialize
+        loadStats();
+        updateDisplay();
+    </script>
 </body>
 </html>
