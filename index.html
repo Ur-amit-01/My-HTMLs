@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Tools Collection</title>
+    <style>
+        :root {
+            --primary: #4a6bff;
+            --secondary: #ff6b6b;
+            --dark: #1a1a2e;
+            --light: #f5f7fa;
+            --accent: #00d1b2;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: var(--light);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 1rem;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .tool-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: cardEntrance 0.5s ease-out;
+            animation-fill-mode: backwards;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .tool-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .tool-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tool-desc {
+            opacity: 0.7;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 1rem;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>My Web Tools Collection</h1>
+        <p class="subtitle">A set of useful web utilities including calculators and a stylish clock</p>
+    </header>
+    
+    <main class="tools-grid">
+        <!-- Power Calculator Card -->
+        <div class="tool-card" onclick="window.location.href='Power_calculator.html'">
+            <div class="tool-icon">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <h3 class="tool-title">Power Calculator</h3>
+            <p class="tool-desc">Calculate power consumption, electrical costs, and energy usage for appliances.</p>
+            <a href="Power_calculator.html" class="btn">Open Calculator</a>
+        </div>
+        
+        <!-- Age Calculator Card -->
+        <div class="tool-card" onclick="window.location.href='Age_calculator.html'">
+            <div class="tool-icon">
+                <i class="fas fa-birthday-cake"></i>
+            </div>
+            <h3 class="tool-title">Age Calculator</h3>
+            <p class="tool-desc">Calculate your exact age in years, months, days, and even seconds!</p>
+            <a href="Age_calculator.html" class="btn">Open Calculator</a>
+        </div>
+        
+        <!-- Clock Card -->
+        <div class="tool-card" onclick="window.location.href='clock.html'">
+            <div class="tool-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <h3 class="tool-title">Neon Clock</h3>
+            <p class="tool-desc">A futuristic animated clock with multiple themes and visual effects.</p>
+            <a href="Clock.html" class="btn">Open Clock</a>
+        </div>
+    </main>
+    
+    <footer>
+        <p>Hosted on GitHub Pages | &copy; 2025 Web Tools Collection ~ Amit</p>
+    </footer>
+
+    <script>
+        // Add staggered animation to cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.tool-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>
